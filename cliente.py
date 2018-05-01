@@ -17,6 +17,7 @@ try:
 		Clientsocket.sendall(mensaje)
 
 		respuesta = Clientsocket.recv(256)
+		print(respuesta)
 finally:
 
 	Clientsocket.close() 
