@@ -4,27 +4,34 @@ import socket
 import time
 
 #Establece un socket para el servidor
-serverSocket = socket.socket(socket.AF_STREAM, socket.SOCK_STREAM)
+serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 #se utiliza '' para la direccion y el puerto 5555 (se puede usar cualquiera)
-serverSocket.bind(str(socket.gethostbyname(socket.gethostname())), 5555)
+direccion_servidor = (str(socket.gethostbyname(socket.gethostname())), 10000)
+serverSocket.bind(direccion_servidor)
 
 #el servidor empieza a escuchar por peticiones
 serverSocket.listen(1)
 
-cliente_conexion,cliente_direccion = serverSocket.accept()
+conexion,cliente_direccion = serverSocket.accept()
 
+#------------------------------------------------------------------------------------
+#funciones SRT Y SJF no expropiativo
+
+#------------------------------------------------------------------------------------
+
+#Recibe el primer mensaje del cliente y con esto elige que algoritmo utilizar
 while True:
-	#recibe un buffer de 256 bytes de parte del cliente	
-	data = cliente_conexion.recv(256)
+	data = conexion.recv(256)
 
-	
+	if data:
+		#recibio datos
+		pass
+	else:
+		#No recibio datos y por ende cerrara la conexion
+		conexion.close()
 
-	if data == 'cierra':
-		cliente_conexion.close()
-
-	print('El cliente con direccion:{} dice: {} a la hora: {}'.append(cliente_direccion,data, time.localtime())
-	cliente_conexion.sendall('Mensaje recibido')
+print(data)
 
 
 
