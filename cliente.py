@@ -6,7 +6,7 @@ import sys
 
 Clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-direccion_servidor = (str(socket.gethostbyname(socket.gethostname())), 10000)
+direccion_servidor = ('localhost', 10000)
 
 Clientsocket.connect(direccion_servidor)
 
@@ -18,5 +18,5 @@ try:
 
 		respuesta = Clientsocket.recv(256)
 finally:
-	
+
 	Clientsocket.close() 
