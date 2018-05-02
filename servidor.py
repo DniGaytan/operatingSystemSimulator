@@ -46,6 +46,7 @@ def creaProcesoSRT(timestampLlegada, tiempoCPU):
     proceso = [SRTPID, timestampLlegada, tiempoCPU, tiempoCPU]
     colaListosSRT.append(proceso)
     SRTPID += 1
+    ordenaColaSRT()
     return proceso[0]
 
 
@@ -74,8 +75,16 @@ def cambiaEstadoProcesoSRT(IOEstado, PID):
     else:
         print('error en IO ', IOEstado)
 
-
-    pass
+def mataProceso(PID):
+    """Elimina proceso independientemente de donde este"""
+    if PID == CPU[0]:
+        colaProcesosTerminadosSRT.append(CPU)
+        CPU = colaListosSRT[0]
+        colaListosSRT.pop(0)
+    elif PID == CPU2[0]:
+        colaProcesosTerminadosSRT.append(CPU2)
+        CPU2 = colaBloqueadosSRT[0]
+        colaListosSRT.pop(0)
 
 def cambiaEstadoProcesoSJF():
     """Mueve los procesos entre las diferentes colas y CPU"""
@@ -100,10 +109,12 @@ def ejecutaAlgoritmoSRT(usaCPU2):
     if CPU[2] > colaListosSRT[0][2]:
         colaListosSRT.append(CPU)
         CPU = colaListosSRT[0][2]
+        ordenaColaSRT()
 
     if CPU2[2] > colaListosSRT[0][2] and usaCPU2:
         colaListosSRT.append(CPU2)
         CPU2 = colaListosSRT[0][2]
+        ordenaColaSRT() 
 
     #checa si el proceso que esta dentro de CPU ya termino con su cputime, si si lo manda a la 
     #cola de procesos terminados
@@ -145,7 +156,7 @@ def mandaEstadoActualSRT():
 
 
 
-def main(politica, cpusUso):
+def main(politica, contexto, cpusUso):
     if cpusUso > 1:
         usaCPU2 = True;
     #Establece un socket para el servidor
@@ -244,7 +255,7 @@ if __name__ == "__main__":
     politica = sys.argv[1]
     contexto = sys.argv[2]
     cpus = sys.argv[3]
-    main(politica)
+    main(politica, contexto, cpus)
 
 
 
